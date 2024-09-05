@@ -15,7 +15,7 @@ pipeline
                 script{
                   //generating log files   
                   bat 'echo "Running Unit tests using JUnit....." > unit-test.log'
-                  bat 'echo "Running Integration tests using Selenium....." > integration-test.log'     
+                  bat 'echo "Running Integration tests using Selenium....." > integ-test.log'     
                 }
                 
             }     
@@ -25,7 +25,7 @@ pipeline
                     emailext (to: "harleen7026@gmail.com",
                         subject: "Tests report",
                         body : "The build was successful. Find the attached log files.",
-                        attachmentsPattern: "**/unit-test.log, **/integration-test.log"
+                        attachmentsPattern: "**/unit-test.log, **/integ-test.log"
                     )
                     
                 }       
@@ -33,7 +33,7 @@ pipeline
                     emailext (to: "harleen7026@gmail.com",
                         subject: "Tests report",
                         body : "The tests failed",
-                        attachmentsPattern: "**/unit-test.log, **/integration-test.log"
+                        attachmentsPattern: "**/unit-test.log, **/integ-test.log"
                     )
                     
                 }
