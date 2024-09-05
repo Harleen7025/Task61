@@ -1,0 +1,99 @@
+
+pipeline
+{
+    agent any
+
+    stages{
+        stage("Build"){
+            steps{
+                echo "Using Maven to compile and package the code. Building......."
+            }
+   
+        }
+        stage("Unit and Integration Tests"){
+            steps{
+                script{
+                  //generating log files   
+                  bat 'echo "Running Unit tests using JUnit....." > unit-test.log'
+                  bat 'echo "Running Integration tests using Selenium....." > integration-test.log'     
+                }
+                
+            }     
+            post
+            {
+                success{
+                    emailext (to: "harleen7026@gmail.com",
+                        subject: "Tests report",
+                        body : "The build was successful. Find the attached log files.",
+                        attachmentsPattern: "**/unit-test.log, **/integration-test.log"
+                    )
+                    
+                }       
+                failure{
+                    emailext (to: "harleen7026@gmail.com",
+                        subject: "Tests report",
+                        body : "The tests failed",
+                        attachmentsPattern: "**/unit-test.log'
+                    )
+                    
+                }
+            }
+        }
+        stage("Code Analysis"){
+            steps{
+                echo "Using CheckStyle to analyse the code......"
+            }
+            post{
+                success{
+                    echo "Code meets the industry standards."
+                }
+            }
+        }
+        stage("Security Scan"){
+            steps{
+                script{
+                    bat 'echo "Perfoming a security scan using Snyk......" > scan.log'
+                }
+            }
+            post{
+                success{
+                    emailext (to: "harleen7026@gmail.com",
+                        subject: "Security scans report",
+                        body : "The security scan was successful.",
+                        attachmentsPattern: 'scan.log'
+                    )
+                    
+                }
+                failure{
+                     emailext( to: "harleen7026@gmail.com",
+                          subject: "Security scans report",
+                           body : "The security scan was successful.",
+                           attachmentsPattern: 'scan.log'
+                           )
+                    
+                }
+            }
+        }
+        stage("Deploy to Staging"){
+            steps{
+                echo "Deploying the application to staging sever: GCP using gcloud CLI......."
+            }
+        }
+        stage("Integration Tests on Staging"){
+            steps{
+                echo "Running Integration tests on the staging environment using Selenium......."
+            }
+        }
+        stage("Deploy to Production"){
+            steps{
+                echo "Deploying the application to a production server on GCP using gcloud CLI"
+            }
+        }
+                
+        
+
+        
+        
+        
+    }
+}
