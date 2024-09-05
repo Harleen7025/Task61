@@ -33,7 +33,7 @@ pipeline
                     emailext (to: "harleen7026@gmail.com",
                         subject: "Tests report",
                         body : "The tests failed",
-                        attachmentsPattern: "**/unit-test.log'
+                        attachmentsPattern: "**/unit-test.log, **/integration-test.log"
                     )
                     
                 }
