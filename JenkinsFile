@@ -67,7 +67,7 @@ pipeline
                 failure{
                      emailext( to: "harleen7026@gmail.com",
                           subject: "Security scans report",
-                           body : "The security scan was successful.",
+                           body : "The security scan was a failure.",
                            attachmentsPattern: 'scan.log'
                            )
                     
